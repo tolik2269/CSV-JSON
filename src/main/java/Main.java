@@ -26,21 +26,22 @@ public class Main {
     public static void main(String[] args) throws IOException, SAXException, ParserConfigurationException {
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
         String fileName = "data.xml";
-        List<Employee> list = parseXML(new String[]{"data.xml"});
+        String fileNamecsv = "data.csv";
+        List<Employee> list = parseXML ("data.xml");
         String json = listToJson(list);
-        List<Employee> listCsv = parseCSV(new String[]{"data.csv"});
+        List<Employee> listCsv = parseCSV("id, firstName,lastName,country,age", "data.csv");
 
         String jsonCSV = listToJson(listCsv);
         writeString(json);
     }
 
-    private static List<Employee> parseCSV(String[] columnMapping) {
+    private static List<Employee> parseCSV(String columnMapping, String fileNamecsv) {
         List<Employee> staff = null;
         try (CSVReader csvReader = new CSVReader(new FileReader("data.csv"))) {
             ColumnPositionMappingStrategy<Employee> strategy =
                     new ColumnPositionMappingStrategy<>();
             strategy.setType(Employee.class);
-            strategy.setColumnMapping("id", "firstName", "lastName", "country", "age");
+            strategy.setColumnMapping (columnMapping);
             CsvToBean<Employee> csv = new CsvToBeanBuilder<Employee>(csvReader)
                     .withMappingStrategy(strategy)
                     .build();
@@ -51,12 +52,10 @@ public class Main {
         }
         return staff;
     }
-
-    private static List<Employee> parseXML(String[] columnMapping) throws ParserConfigurationException, IOException, SAXException {
-
+    private static List<Employee> parseXML(String fileName) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(new File("data.xml"));
+        Document document = builder.parse(new File(fileName));
         Node root = document.getDocumentElement();
         NodeList nodeList = root.getChildNodes();
         List<Employee> employees = new ArrayList<>();
@@ -75,7 +74,6 @@ public class Main {
                 );
                     employees.add(employee);
                 }
-
             }
         return employees;
     }

@@ -28,13 +28,12 @@ public class Main {
         String fileNamecsv = "data.csv";
         List<Employee> list = parseXML("data.xml");
         String json = listToJson(list);
-        List<Employee> listCsv = parseCSV("id, firstName,lastName,country,age", "data.csv");
-//
-//        String jsonCSV = listToJson(listCsv);
-//        writeString(json);
+        parseCSV(columnMapping, fileNamecsv);
+        parseXML(fileName);
+        writeString(json);
     }
 
-    private static List<Employee> parseCSV(String columnMapping, String fileNamecsv) {
+    private static List<Employee> parseCSV(String [] columnMapping, String fileNamecsv) {
         List<Employee> staff = null;
         try (CSVReader csvReader = new CSVReader(new FileReader(fileNamecsv))) {
             ColumnPositionMappingStrategy<Employee> strategy =

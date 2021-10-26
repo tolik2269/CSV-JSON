@@ -30,13 +30,10 @@ public class Main {
         List<Employee> list2 = parseCSV(columnMapping, fileNamecsv);
         String json = listToJson(list);
         String json2 = listToJson(list2);
-//        parseCSV(columnMapping, fileNamecsv);
-//        parseXML(fileName);
-        String outputFile1 = "output1.json";
-        String outputFile2 = "output2.json";
-
-        writeString(json, outputFile1);
-        writeString(json2, outputFile2);
+        String outputFileXml = "data2.json";
+        String outputFileCvt = "data.json";
+        writeString(json, outputFileXml);
+        writeString(json2, outputFileCvt);
     }
 
 

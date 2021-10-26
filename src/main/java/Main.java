@@ -26,12 +26,19 @@ public class Main {
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
         String fileName = "data.xml";
         String fileNamecsv = "data.csv";
-        List<Employee> list = parseXML("data.xml");
+        List<Employee> list = parseXML(fileName);
+        List<Employee> list2 = parseCSV(columnMapping, fileNamecsv);
         String json = listToJson(list);
-        parseCSV(columnMapping, fileNamecsv);
-        parseXML(fileName);
-        writeString(json);
+        String json2 = listToJson(list2);
+//        parseCSV(columnMapping, fileNamecsv);
+//        parseXML(fileName);
+        String outputFile1 = "output1.json";
+        String outputFile2 = "output2.json";
+
+        writeString(json, outputFile1);
+        writeString(json2, outputFile2);
     }
+
 
     private static List<Employee> parseCSV(String [] columnMapping, String fileNamecsv) {
         List<Employee> staff = null;
@@ -85,15 +92,13 @@ public class Main {
         return gson.toJson(list, listType);
     }
 
-    private static void writeString(String json) {
-
-        try (FileWriter file = new FileWriter("new_data.json")) {
+    private static void writeString(String json, String fileNamecsv) {
+        try (FileWriter file = new FileWriter(fileNamecsv)){
             file.write(json.toString());
             file.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
+            }
 
 }
